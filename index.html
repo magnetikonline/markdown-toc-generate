@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="en" class="nojs">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+
+	<title>Markdown TOC generate</title>
+	<link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+	<h1>Markdown TOC generate</h1>
+	<p>
+		<a href="https://github.com/magnetikonline/markdowntocgenerate">
+			https://github.com/magnetikonline/markdowntocgenerate
+		</a>
+	</p>
+
+	<h2>Source markdown</h2>
+	<p>
+		<textarea id="markdown-source">
+# Heading 01
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce magna enim, auctor nec ullamcorper nec, viverra a leo. Cras id scelerisque velit. Nunc scelerisque purus non semper scelerisque.
+
+## Sub heading 01
+Mauris eu sagittis nulla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc hendrerit dui ex, ac placerat nisl interdum sit amet.
+
+## Sub heading 02
+Vestibulum vel sapien convallis, maximus neque ac, cursus quam. Vestibulum efficitur nisi quis arcu laoreet dapibus. Aliquam ornare tortor sit amet massa efficitur, nec ultricies felis imperdiet.
+
+# Heading 02
+Donec feugiat augue metus, at convallis odio volutpat ut. In feugiat odio ac urna vulputate, ut posuere lacus fringilla. In et porta lectus, eu efficitur magna.
+</textarea>
+	</p>
+
+	<p>
+		<button id="generate">Generate TOC</button>
+
+		<label for="indent-style">Indent:</label>
+		<select id="indent-style">
+			<option value="tab">Tabs</option>
+			<option value="space-1">Space [1]</option>
+			<option value="space-2">Space [2]</option>
+			<option value="space-3">Space [3]</option>
+			<option value="space-4">Space [4]</option>
+		</select>
+	</p>
+
+	<h2>Output TOC markdown</h2>
+	<p>
+		<textarea id="markdown-output" class="output"></textarea>
+	</p>
+
+	<script src="app.js"></script>
+
+</body>
+</html>
