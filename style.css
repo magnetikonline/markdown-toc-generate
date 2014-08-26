@@ -1,0 +1,48 @@
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body {
+	background: #fff;
+	color: #000;
+	font: normal 62.5%/1 Arial,'Helvetica Neue',Helvetica,sans-serif;
+	margin: 20px;
+}
+
+h1 {
+	font-size: 3em;
+	margin: 0 0 5px;
+}
+
+h2 {
+	font-size: 1.8em;
+	margin: 30px 0 5px;
+}
+
+p {
+	font-size: 1.2em;
+	margin: 0 0 5px;
+}
+
+p > a,
+p > a:visited {
+	color: #f00;
+	text-decoration: underline;
+}
+
+p > a:hover {
+	text-decoration: none;
+}
+
+textarea {
+	font: normal 14px/1 'Courier New',Courier,'Lucida Sans Typewriter','Lucida Typewriter',monospace;
+	height: 400px;
+	width: 90%;
+}
+
+textarea.output {
+	height: 200px;
+	width: 60%;
+}
