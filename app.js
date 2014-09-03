@@ -46,7 +46,8 @@
 
 		var currentHeaderLevel = -1,
 			currentIndent = -1,
-			markdownTOC = '';
+			markdownTOC = '',
+			pageAnchorCollection = {};
 
 		headerList.forEach(function(item) {
 
@@ -63,9 +64,19 @@
 			// remember current header level
 			currentHeaderLevel = headerLevel;
 
+			var pageAnchor = buildMarkdownPageAnchor(item.text);
+			if (pageAnchorCollection[pageAnchor] === undefined) {
+				// new page anchor name
+				pageAnchorCollection[pageAnchor] = 1;
+
+			} else {
+				// add increment to an already seen pageAnchor name
+				pageAnchor += '-' + pageAnchorCollection[pageAnchor]++;
+			}
+
 			// build TOC line
 			for (var i = 0;i < currentIndent;i++) markdownTOC += indentWith;
-			markdownTOC += '- [' + item.text + '](#' + buildMarkdownPageAnchor(item.text) + ')\n';
+			markdownTOC += '- [' + item.text + '](#' + pageAnchor + ')\n';
 		});
 
 		return markdownTOC;
