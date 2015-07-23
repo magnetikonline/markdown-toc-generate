@@ -6,10 +6,13 @@
 
 	function getHeaderListFromMarkdown(markdown) {
 
-		var markdownLines = markdown.trim().split(/\r?\n/),
+		var markdownLineList = markdown.trim().split(/\r?\n/),
 			headerList = [];
 
-		markdownLines.forEach(function(line) {
+		markdownLineList.forEach(function(line) {
+
+			// is line part of a code block? if so, skip
+			if (/^ {4,}|\t/.test(line)) return;
 
 			var headerMatch = line.trim().match(/^(#+) *(.+)/);
 			if (headerMatch === null) return;
