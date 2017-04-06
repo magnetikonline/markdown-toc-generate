@@ -1,6 +1,4 @@
 * {
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
 
@@ -11,19 +9,28 @@ body {
 	margin: 20px;
 }
 
+h1,h2,p {
+	margin: 0 auto 5px;
+	max-width: 760px;
+	min-width: 400px;
+}
+
 h1 {
 	font-size: 3em;
-	margin: 0 0 5px;
 }
 
 h2 {
 	font-size: 1.8em;
-	margin: 30px 0 5px;
+	margin-top: 30px;
 }
 
 p {
 	font-size: 1.2em;
-	margin: 0 0 5px;
+	margin-bottom: 10px;
+}
+
+p.hide {
+	display: none;
 }
 
 p > a,
@@ -36,13 +43,25 @@ p > a:hover {
 	text-decoration: none;
 }
 
-textarea {
-	font: normal 14px/1 'Courier New',Courier,'Lucida Sans Typewriter','Lucida Typewriter',monospace;
-	height: 400px;
-	width: 90%;
+p > label,
+p > input,
+p > select {
+	vertical-align: middle;
 }
 
-textarea.output {
-	height: 200px;
-	width: 60%;
+p > label {
+	display: inline-block;
+	width: 120px;
+}
+
+p > input,
+p > select {
+	font-size: 100%;
+	margin: 0;
+}
+
+p > textarea {
+	font: normal 14px/1 'Courier New',Courier,'Lucida Sans Typewriter','Lucida Typewriter',monospace;
+	height: 400px;
+	width: 100%;
 }
