@@ -8,6 +8,8 @@
 
 	<title>Markdown TOC generate</title>
 	<link rel="stylesheet" href="style.css" />
+	<script async src="app.js"></script>
+
 </head>
 
 <body>
@@ -28,18 +30,25 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce magna enim, aucto
 ## Sub heading 01
 Mauris eu sagittis nulla. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nunc hendrerit dui ex, ac placerat nisl interdum sit amet.
 
-## Sub heading 02
+## [Sub heading 02](#link)
 Vestibulum vel sapien convallis, maximus neque ac, cursus quam. Vestibulum efficitur nisi quis arcu laoreet dapibus. Aliquam ornare tortor sit amet massa efficitur, nec ultricies felis imperdiet.
 
-# Heading 02
+```
+# fenced code block
+```
+
+Heading 02
+====
 Donec feugiat augue metus, at convallis odio volutpat ut. In feugiat odio ac urna vulputate, ut posuere lacus fringilla. In et porta lectus, eu efficitur magna.
+
+Sub heading 03
+----
 </textarea>
 	</p>
 
 	<p>
-		<button id="generate">Generate TOC</button>
+		<label for="indent-style">Indent</label>
 
-		<label for="indent-style">Indent:</label>
 		<select id="indent-style">
 			<option value="tab">Tabs</option>
 			<option value="space-1">Space [1]</option>
@@ -49,12 +58,23 @@ Donec feugiat augue metus, at convallis odio volutpat ut. In feugiat odio ac urn
 		</select>
 	</p>
 
-	<h2>Output TOC markdown</h2>
 	<p>
-		<textarea id="markdown-output" class="output"></textarea>
+		<label for="skip-first-heading">Skip first heading</label>
+		<input id="skip-first-heading" type="checkbox" />
 	</p>
 
-	<script src="app.js"></script>
+	<p>
+		<button id="generate">Generate</button>
+	</p>
+
+	<h2>Table of contents</h2>
+	<p>
+		<textarea id="table-of-contents"></textarea>
+	</p>
+
+	<p class="hide">
+		<button id="copy-clipboard">Copy to clipboard</button>
+	</p>
 
 </body>
 </html>

@@ -1,10 +1,14 @@
 # Markdown TOC generate
-Client side Markdown table of contents (TOC) generator, very rough-and-ready.
+Client side Markdown table of contents (TOC) generator.
 
-- Drop your source markdown document into the first textarea.
-- Hit **Generate**.
-- A generated TOC list will be placed into the second textarea.
+## Usage
+- Paste source Markdown document into first textarea.
+- Select options.
+- Hit <kbd>Generate</kbd>.
+- Final table of contents dropped into second textarea.
+- Hit <kbd>Copy to clipboard</kbd> and you're done.
 
-Available online here: http://magnetikonline.github.io/markdowntocgenerate/.
+## Online
+Available here: https://magnetikonline.github.io/markdowntocgenerate/.
 
-Tested with Chrome v36, but should work with any recent browser and IE9+.
+Built and tested against Google Chrome (version 50).

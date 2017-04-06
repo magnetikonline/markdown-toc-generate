@@ -1,43 +1,109 @@
-(function() {
+(() => {
 
 	'use strict';
 
-	function $(id) { return document.getElementById(id); }
+	let MARKDOWN_LINK_MATCH_REGEXP = /\[([^\]]+)\]\([^\)]+\)/g,
+		CODE_BLOCK_INDENT_REGEXP = /^ {4,}|\t/,
+		CODE_BLOCK_FENCED_REGEXP = /^```([a-z]+)?$/,
+		HEADER_HASH_REGEXP = /^(#{1,6})( +.+)$/,
+		HEADER_UNDERLINE_REGEXP = /^(=+|-+)$/;
+
+	function $(id) {
+
+		return document.getElementById(id);
+	}
+
+	function getMarkdownStripLink(text) {
+
+		// attempt to strip out [links](#url) segments, leaving just [links]
+		// note: very basic, won't handle repeated [] or () segments in link values well
+		return text.replace(
+			MARKDOWN_LINK_MATCH_REGEXP,
+			(match,linkLabel) => linkLabel
+		);
+	}
 
 	function getHeaderListFromMarkdown(markdown) {
 
-		var markdownLineList = markdown.trim().split(/\r?\n/),
-			headerList = [];
+		let markdownLineList = markdown.trim().split(/\r?\n/),
+			headerList = [],
+			codeBlockFenceActive = false,
+			lineItemPrevious;
 
-		markdownLineList.forEach(function(line) {
-
-			// is line part of a code block? if so, skip
-			if (/^ {4,}|\t/.test(line)) return;
-
-			var headerMatch = line.trim().match(/^(#+) *(.+)/);
-			if (headerMatch === null) return;
+		function addItem(level,text) {
 
 			headerList.push({
-				level: headerMatch[1].length,
-				text: headerMatch[2].trim()
+				level: level,
+				text: text.trim()
 			});
-		});
+
+			lineItemPrevious = undefined;
+		}
+
+		// work over each markdown line
+		for (let lineItem of markdownLineList) {
+			// indented code block line? if so, skip.
+			if (CODE_BLOCK_INDENT_REGEXP.test(lineItem)) {
+				continue;
+			}
+
+			lineItem = lineItem.trim();
+
+			// fenced code block start/end?
+			if (CODE_BLOCK_FENCED_REGEXP.test(lineItem)) {
+				codeBlockFenceActive = !codeBlockFenceActive;
+				continue;
+			}
+
+			if (codeBlockFenceActive) {
+				// skip all lines within a fenced code block
+				continue;
+			}
+
+			// line match hash header style?
+			let headerHashMatch = HEADER_HASH_REGEXP.exec(lineItem);
+			if (headerHashMatch) {
+				addItem(
+					headerHashMatch[1].length, // heading level
+					getMarkdownStripLink(headerHashMatch[2])
+				);
+
+				continue;
+			}
+
+			// line match underline header style?
+			if (
+				lineItemPrevious &&
+				HEADER_UNDERLINE_REGEXP.test(lineItem)
+			) {
+				addItem(
+					// '=' = level 1 header, '-' = level 2
+					(lineItem[0] == '=') ? 1 : 2,
+					getMarkdownStripLink(lineItemPrevious)
+				);
+
+				continue;
+			}
+
+			lineItemPrevious = lineItem;
+		}
 
 		return headerList;
 	}
 
 	function getIndentWith(style) {
 
-		return {
-			'tab': '\t',
-			'space-1': ' ',
-			'space-2': '  ',
-			'space-3': '   ',
-			'space-4': '    '
-		}[style];
+		// if tab mode
+		if (style == 'tab') {
+			return '\t';
+		}
+
+		// spaces mode
+		let match = /^space-([0-9])$/.exec(style);
+		return ' '.repeat((match) ? match[1] : 1);
 	}
 
-	function buildMarkdownPageAnchor(text) {
+	function getMarkdownPageAnchor(text) {
 
 		return text
 			.toLowerCase()
@@ -45,52 +111,95 @@
 			.replace(/ /g,'-');
 	}
 
-	function buildTOCMarkdownFromHeaderList(headerList,indentWith) {
+	function buildTOCMarkdown(headerList,indentWith,skipFirst) {
 
-		var currentHeaderLevel = -1,
+		let currentHeaderLevel = -1,
 			currentIndent = -1,
-			markdownTOC = '',
-			pageAnchorCollection = {};
+			pageAnchorSeenCollection = {},
+			markdownTOC = '';
 
-		headerList.forEach(function(item) {
+		for (let headerItem of headerList) {
+			// skip the first heading found?
+			if (skipFirst) {
+				skipFirst = false;
+				continue;
+			}
 
-			// adjust header level for next TOC item
-			var headerLevel = item.level;
+			// raise/lower indent level for next TOC item
+			let headerLevel = headerItem.level;
 			if (headerLevel > currentHeaderLevel) {
 				currentIndent++;
 
 			} else if (headerLevel < currentHeaderLevel) {
 				currentIndent -= (currentHeaderLevel - headerLevel);
-				if (currentIndent < 0) currentIndent = 0;
+				currentIndent = Math.max(currentIndent,0);
 			}
 
-			// remember current header level
 			currentHeaderLevel = headerLevel;
 
-			var pageAnchor = buildMarkdownPageAnchor(item.text);
-			if (pageAnchorCollection[pageAnchor] === undefined) {
-				// new page anchor name
-				pageAnchorCollection[pageAnchor] = 1;
+			let pageAnchor = getMarkdownPageAnchor(headerItem.text);
+			if (pageAnchorSeenCollection[pageAnchor] === undefined) {
+				// new page anchor
+				pageAnchorSeenCollection[pageAnchor] = 1;
 
 			} else {
 				// add increment to an already seen pageAnchor name
-				pageAnchor += '-' + pageAnchorCollection[pageAnchor]++;
+				pageAnchor = `${pageAnchor}-${pageAnchorSeenCollection[pageAnchor]++}`;
 			}
 
 			// build TOC line
-			for (var i = 0;i < currentIndent;i++) markdownTOC += indentWith;
-			markdownTOC += '- [' + item.text + '](#' + pageAnchor + ')\n';
-		});
+			markdownTOC += (
+				indentWith.repeat(currentIndent) +
+				`- [${headerItem.text}](#${pageAnchor})\n`
+			);
+		}
 
 		return markdownTOC;
 	}
 
-	// add click handler to 'Generate' button
-	$('generate').addEventListener('click',function() {
+	function copyFormElementToClipboard(el) {
 
-		$('markdown-output').value = buildTOCMarkdownFromHeaderList(
-			getHeaderListFromMarkdown($('markdown-source').value),
-			getIndentWith($('indent-style').value)
-		);
-	});
+		// select element, copy content to clipboard then un-focus/select
+		el.select();
+		document.execCommand('copy');
+		window.getSelection().removeAllRanges();
+		el.blur();
+	}
+
+	function init() {
+
+		let tableOfContentsEl = $('table-of-contents');
+
+		// determine if clipboard is available to browser
+		if (
+			document.queryCommandSupported &&
+			document.queryCommandSupported('copy')
+		) {
+			let copyClipboardEl = $('copy-clipboard');
+
+			// display copy to clipboard button, add click handler
+			copyClipboardEl.parentNode.classList.remove('hide');
+			copyClipboardEl.addEventListener(
+				'click',
+				copyFormElementToClipboard.bind(null,tableOfContentsEl)
+			);
+		}
+
+		// add click handler to 'Generate' button
+		$('generate').addEventListener('click',() => {
+
+			tableOfContentsEl.value = buildTOCMarkdown(
+				getHeaderListFromMarkdown($('markdown-source').value),
+				getIndentWith($('indent-style').value),
+				$('skip-first-heading').checked
+			);
+		});
+	}
+
+	if (document.readyState == 'loading') {
+		document.addEventListener('DOMContentLoaded',init);
+
+	} else {
+		init();
+	}
 })();
