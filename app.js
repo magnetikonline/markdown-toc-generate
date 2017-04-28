@@ -3,8 +3,11 @@
 	'use strict';
 
 	let MARKDOWN_LINK_MATCH_REGEXP = /\[([^\]]+)\]\([^\)]+\)/g,
+		MARKDOWN_INLINE_CODE_START_END_REGEXP = /^`+(.+)`+$/,
+
 		CODE_BLOCK_INDENT_REGEXP = /^ {4,}|\t/,
 		CODE_BLOCK_FENCED_REGEXP = /^```([a-z]+)?$/,
+
 		HEADER_HASH_REGEXP = /^(#{1,6})( +.+)$/,
 		HEADER_UNDERLINE_REGEXP = /^(=+|-+)$/;
 
@@ -13,14 +16,19 @@
 		return document.getElementById(id);
 	}
 
-	function getMarkdownStripLink(text) {
+	function getMarkdownStripMeta(text) {
 
 		// attempt to strip out [links](#url) segments, leaving just [links]
 		// note: very basic, won't handle repeated [] or () segments in link values well
-		return text.replace(
+		text = text.replace(
 			MARKDOWN_LINK_MATCH_REGEXP,
 			(match,linkLabel) => linkLabel
 		);
+
+		// if text starts and ends with inline code backticks, remove
+		text = text.replace(MARKDOWN_INLINE_CODE_START_END_REGEXP,'$1');
+
+		return text;
 	}
 
 	function getHeaderListFromMarkdown(markdown) {
@@ -34,7 +42,7 @@
 
 			headerList.push({
 				level: level,
-				text: text.trim()
+				text: text
 			});
 
 			lineItemPrevious = undefined;
@@ -65,7 +73,7 @@
 			if (headerHashMatch) {
 				addItem(
 					headerHashMatch[1].length, // heading level
-					getMarkdownStripLink(headerHashMatch[2])
+					getMarkdownStripMeta(headerHashMatch[2].trim())
 				);
 
 				continue;
@@ -79,7 +87,7 @@
 				addItem(
 					// '=' = level 1 header, '-' = level 2
 					(lineItem[0] == '=') ? 1 : 2,
-					getMarkdownStripLink(lineItemPrevious)
+					getMarkdownStripMeta(lineItemPrevious)
 				);
 
 				continue;
