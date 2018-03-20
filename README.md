@@ -9,6 +9,6 @@ Client side Markdown table of contents (TOC) generator.
 - Hit <kbd>Copy to clipboard</kbd> and you're done.
 
 ## Online
-Available here: https://magnetikonline.github.io/markdowntocgenerate/.
+Available here: https://magnetikonline.github.io/markdown-toc-generate/.
 
 Built and tested against Google Chrome (version 50).
