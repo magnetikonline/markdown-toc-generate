@@ -2,7 +2,7 @@
 
 	'use strict';
 
-	let MARKDOWN_LINK_MATCH_REGEXP = /\[([^\]]+)\]\([^\)]+\)/g,
+	const MARKDOWN_LINK_MATCH_REGEXP = /\[([^\]]+)\]\([^\)]+\)/g,
 		MARKDOWN_INLINE_CODE_START_END_REGEXP = /^`+[^`]+`+$/,
 
 		CODE_BLOCK_INDENT_REGEXP = /^ {4,}|\t/,
@@ -35,9 +35,10 @@
 
 	function getHeaderListFromMarkdown(markdown) {
 
-		let markdownLineList = markdown.trim().split(/\r?\n/),
-			headerList = [],
-			codeBlockFenceActive = false,
+		const markdownLineList = markdown.trim().split(/\r?\n/),
+			headerList = [];
+
+		let codeBlockFenceActive = false,
 			lineItemPrevious;
 
 		function addItem(level,text) {
@@ -51,16 +52,16 @@
 		}
 
 		// work over each markdown line
-		for (let lineItem of markdownLineList) {
+		for (const lineItem of markdownLineList) {
 			// indented code block line? if so, skip.
 			if (CODE_BLOCK_INDENT_REGEXP.test(lineItem)) {
 				continue;
 			}
 
-			lineItem = lineItem.trim();
+			const lineItemTrim = lineItem.trim();
 
 			// fenced code block start/end?
-			if (CODE_BLOCK_FENCED_REGEXP.test(lineItem)) {
+			if (CODE_BLOCK_FENCED_REGEXP.test(lineItemTrim)) {
 				codeBlockFenceActive = !codeBlockFenceActive;
 				continue;
 			}
@@ -71,7 +72,7 @@
 			}
 
 			// line match hash header style?
-			let headerHashMatch = HEADER_HASH_REGEXP.exec(lineItem);
+			const headerHashMatch = HEADER_HASH_REGEXP.exec(lineItemTrim);
 			if (headerHashMatch) {
 				addItem(
 					headerHashMatch[1].length, // heading level
@@ -84,18 +85,18 @@
 			// line match underline header style?
 			if (
 				lineItemPrevious &&
-				HEADER_UNDERLINE_REGEXP.test(lineItem)
+				HEADER_UNDERLINE_REGEXP.test(lineItemTrim)
 			) {
 				addItem(
 					// '=' = level 1 header, '-' = level 2
-					(lineItem[0] == '=') ? 1 : 2,
+					(lineItemTrim[0] == '=') ? 1 : 2,
 					getMarkdownStripMeta(lineItemPrevious)
 				);
 
 				continue;
 			}
 
-			lineItemPrevious = lineItem;
+			lineItemPrevious = lineItemTrim;
 		}
 
 		return headerList;
@@ -109,7 +110,7 @@
 		}
 
 		// spaces mode
-		let match = /^space-([0-9])$/.exec(style);
+		const match = /^space-([0-9])$/.exec(style);
 		return ' '.repeat((match) ? match[1] : 1);
 	}
 
@@ -123,12 +124,12 @@
 
 	function buildTOCMarkdown(headerList,indentWith,skipFirst) {
 
+		const pageAnchorSeenCollection = {};
 		let currentHeaderLevel = -1,
 			currentIndent = -1,
-			pageAnchorSeenCollection = {},
 			markdownTOC = '';
 
-		for (let headerItem of headerList) {
+		for (const headerItem of headerList) {
 			// skip the first heading found?
 			if (skipFirst) {
 				skipFirst = false;
@@ -136,7 +137,7 @@
 			}
 
 			// raise/lower indent level for next TOC item
-			let headerLevel = headerItem.level;
+			const headerLevel = headerItem.level;
 			if (headerLevel > currentHeaderLevel) {
 				currentIndent++;
 
@@ -176,16 +177,16 @@
 		el.blur();
 	}
 
-	function init() {
+	function main() {
 
-		let tableOfContentsEl = $('table-of-contents');
+		const tableOfContentsEl = $('table-of-contents');
 
 		// determine if clipboard is available to browser
 		if (
 			document.queryCommandSupported &&
 			document.queryCommandSupported('copy')
 		) {
-			let copyClipboardEl = $('copy-clipboard');
+			const copyClipboardEl = $('copy-clipboard');
 
 			// display copy to clipboard button, add click handler
 			copyClipboardEl.parentNode.classList.remove('hide');
@@ -207,9 +208,9 @@
 	}
 
 	if (document.readyState == 'loading') {
-		document.addEventListener('DOMContentLoaded',init);
-
-	} else {
-		init();
+		document.addEventListener('DOMContentLoaded',main);
+		return;
 	}
+
+	main();
 })();
