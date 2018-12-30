@@ -3,7 +3,7 @@
 	'use strict';
 
 	const MARKDOWN_LINK_MATCH_REGEXP = /\[([^\]]+)\]\([^\)]+\)/g,
-		MARKDOWN_INLINE_CODE_START_END_REGEXP = /^`+[^`]+`+$/,
+		MARKDOWN_INLINE_CODE_START_END_REGEXP = /^`[^`]+`$/,
 
 		CODE_BLOCK_INDENT_REGEXP = /^ {4,}|\t/,
 		CODE_BLOCK_FENCED_REGEXP = /^```([a-z]+)?$/,
@@ -23,7 +23,7 @@
 			(match,linkLabel) => linkLabel
 		);
 
-		// if text starts and ends with a *single set* of inline code backticks, remove then
+		// if text starts and ends with a *single set* of inline code backticks, remove them
 		if (MARKDOWN_INLINE_CODE_START_END_REGEXP.test(text)) {
 			text = text.substring(1,text.length -1);
 		}
