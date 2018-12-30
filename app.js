@@ -12,12 +12,10 @@
 		HEADER_UNDERLINE_REGEXP = /^(=+|-+)$/;
 
 	function $(id) {
-
 		return document.getElementById(id);
 	}
 
 	function getMarkdownStripMeta(text) {
-
 		// attempt to strip out [links](#url) segments, leaving just [links]
 		// note: very basic, won't handle repeated [] or () segments in link values well
 		text = text.replace(
@@ -34,7 +32,6 @@
 	}
 
 	function getHeaderListFromMarkdown(markdown) {
-
 		const markdownLineList = markdown.trim().split(/\r?\n/),
 			headerList = [];
 
@@ -42,7 +39,6 @@
 			lineItemPrevious;
 
 		function addItem(level,text) {
-
 			headerList.push({
 				level: level,
 				text: text
@@ -103,7 +99,6 @@
 	}
 
 	function getIndentWith(style) {
-
 		// if tab mode
 		if (style == 'tab') {
 			return '\t';
@@ -115,7 +110,6 @@
 	}
 
 	function getMarkdownPageAnchor(text) {
-
 		return text
 			.toLowerCase()
 			.replace(/[^a-z0-9-_ ]/g,'')
@@ -123,7 +117,6 @@
 	}
 
 	function buildTOCMarkdown(headerList,indentWith,skipFirst) {
-
 		const pageAnchorSeenCollection = {};
 		let currentHeaderLevel = -1,
 			currentIndent = -1,
@@ -169,7 +162,6 @@
 	}
 
 	function copyFormElementToClipboard(el) {
-
 		// select element, copy content to clipboard then un-focus/select
 		el.select();
 		document.execCommand('copy');
@@ -178,7 +170,6 @@
 	}
 
 	function main() {
-
 		const tableOfContentsEl = $('table-of-contents');
 
 		// determine if clipboard is available to browser
@@ -198,7 +189,6 @@
 
 		// add click handler to 'Generate' button
 		$('generate').addEventListener('click',() => {
-
 			tableOfContentsEl.value = buildTOCMarkdown(
 				getHeaderListFromMarkdown($('markdown-source').value),
 				getIndentWith($('indent-style').value),
