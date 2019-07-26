@@ -14,7 +14,7 @@ const app = (mainCallback) => {
 		return document.getElementById(id);
 	}
 
-	function getMarkdownStripMeta(text) {
+	function markdownStripMeta(text) {
 		// attempt to strip out [links](#url) segments, leaving just [links]
 		// note: very basic, won't handle repeated [] or () segments in link values well
 		text = text.replace(
@@ -30,7 +30,7 @@ const app = (mainCallback) => {
 		return text;
 	}
 
-	function getHeaderListFromMarkdown(markdown) {
+	function headerListFromMarkdown(markdown) {
 		const markdownLineList = markdown.trim().split(/\r?\n/),
 			headerList = [];
 
@@ -71,7 +71,7 @@ const app = (mainCallback) => {
 			if (headerHashMatch) {
 				addItem(
 					headerHashMatch[1].length, // heading level
-					getMarkdownStripMeta(headerHashMatch[2].trim())
+					markdownStripMeta(headerHashMatch[2].trim())
 				);
 
 				continue;
@@ -85,7 +85,7 @@ const app = (mainCallback) => {
 				addItem(
 					// '=' = level 1 header, '-' = level 2
 					(lineItemTrim[0] == '=') ? 1 : 2,
-					getMarkdownStripMeta(lineItemPrevious)
+					markdownStripMeta(lineItemPrevious)
 				);
 
 				continue;
@@ -97,7 +97,7 @@ const app = (mainCallback) => {
 		return headerList;
 	}
 
-	function getIndentWith(style) {
+	function indentWith(style) {
 		// tab mode
 		if (style == 'tab') {
 			return '\t';
@@ -108,7 +108,7 @@ const app = (mainCallback) => {
 		return ' '.repeat((match) ? match[1] : 1);
 	}
 
-	function getMarkdownPageAnchor(text) {
+	function buildPageAnchor(text) {
 		return stripPunctuation(text)
 			.replace(/ /g,'-')
 			.toLowerCase();
@@ -139,7 +139,7 @@ const app = (mainCallback) => {
 
 			currentHeaderLevel = headerLevel;
 
-			let pageAnchor = getMarkdownPageAnchor(headerItem.text);
+			let pageAnchor = buildPageAnchor(headerItem.text);
 			if (pageAnchorSeenCollection[pageAnchor] === undefined) {
 				// new page anchor
 				pageAnchorSeenCollection[pageAnchor] = 1;
@@ -325,8 +325,8 @@ const app = (mainCallback) => {
 		// add click handler to 'Generate' button
 		$('generate').addEventListener('click',() => {
 			tableOfContentsEl.value = buildTOCMarkdown(
-				getHeaderListFromMarkdown($('markdown-source').value),
-				getIndentWith($('indent-style').value),
+				headerListFromMarkdown($('markdown-source').value),
+				indentWith($('indent-style').value),
 				$('skip-first-heading').checked
 			);
 		});
