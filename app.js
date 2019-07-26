@@ -5,7 +5,7 @@ const app = (mainCallback) => {
 		MARKDOWN_INLINE_CODE_START_END_REGEXP = /^`[^`]+`$/,
 
 		CODE_BLOCK_INDENT_REGEXP = /^ {4,}|\t/,
-		CODE_BLOCK_FENCED_REGEXP = /^```([a-z]+)?$/,
+		CODE_BLOCK_FENCED_REGEXP = /^``` *([a-z]+)?$/,
 
 		HEADER_HASH_REGEXP = /^(#{1,6})( +.+)$/,
 		HEADER_UNDERLINE_REGEXP = /^(=+|-+)$/;
