@@ -1,7 +1,6 @@
-(() => {
+'use strict';
 
-	'use strict';
-
+const app = (mainCallback) => {
 	const MARKDOWN_LINK_MATCH_REGEXP = /\[([^\]]+)\]\([^\)]+\)/g,
 		MARKDOWN_INLINE_CODE_START_END_REGEXP = /^`[^`]+`$/,
 
@@ -25,7 +24,7 @@
 
 		// if text starts and ends with a *single set* of inline code backticks, remove them
 		if (MARKDOWN_INLINE_CODE_START_END_REGEXP.test(text)) {
-			text = text.substring(1,text.length -1);
+			text = text.substring(1,text.length - 1);
 		}
 
 		return text;
@@ -169,7 +168,7 @@
 		el.blur();
 	}
 
-	function main() {
+	function init() {
 		const tableOfContentsEl = $('table-of-contents');
 
 		// determine if clipboard is available to browser
@@ -197,10 +196,23 @@
 		});
 	}
 
-	if (document.readyState == 'loading') {
-		document.addEventListener('DOMContentLoaded',main);
-		return;
-	}
+	(mainCallback || (() => {
+		if (document.readyState == 'loading') {
+			document.addEventListener('DOMContentLoaded',init);
+			return;
+		}
 
-	main();
-})();
+		// DOM already ready
+		init();
+	}))({});
+};
+
+// export app() for Node.js
+if ((typeof module != 'undefined') && module.exports) {
+	module.exports = app;
+}
+
+// test if we are a browser
+if (typeof window != 'undefined') {
+	app();
+}
