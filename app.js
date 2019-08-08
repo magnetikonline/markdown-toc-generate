@@ -179,7 +179,7 @@ const app = (mainCallback) => {
 	}
 
 	function isPunctuation(charCode) {
-		if (
+		return (
 			// simple characters
 			((charCode >= 33) && (charCode <= 47)) ||
 			((charCode >= 58) && (charCode <= 64)) ||
@@ -297,11 +297,7 @@ const app = (mainCallback) => {
 			(charCode == 92782) || (charCode == 92783) || (charCode == 92917) ||
 			((charCode >= 92983) && (charCode <= 92987)) ||
 			(charCode == 92996) || (charCode == 113823)
-		) {
-			return true;
-		}
-
-		return false;
+		);
 	}
 
 	function init() {
