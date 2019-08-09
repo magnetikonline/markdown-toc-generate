@@ -170,7 +170,7 @@ const app = (mainCallback) => {
 	function stripPunctuation(text) {
 		let result = '';
 		for (const char of text) {
-			if (!isPunctuation(char.charCodeAt())) {
+			if ((char == '-') || (char == '_') || !isPunctuation(char.charCodeAt())) {
 				result += char;
 			}
 		}
