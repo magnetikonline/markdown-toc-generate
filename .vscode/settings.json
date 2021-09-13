@@ -1,0 +1,12 @@
+{
+	"javascript.format.insertSpaceAfterCommaDelimiter": false,
+	"javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
+	"javascript.format.semicolons": "insert",
+	"[javascript]": {
+		"editor.formatOnSave": true,
+	},
+	"[json]": {
+		"editor.formatOnSave": true,
+	},
+}
