@@ -5,11 +5,13 @@
 body {
 	background: #fff;
 	color: #000;
-	font: normal 62.5%/1 Arial,'Helvetica Neue',Helvetica,sans-serif;
+	font: normal 62.5%/1 Arial, 'Helvetica Neue', Helvetica, sans-serif;
 	margin: 20px;
 }
 
-h1,h2,p {
+h1,
+h2,
+p {
 	margin: 0 auto 5px;
 	max-width: 760px;
 	min-width: 400px;
@@ -61,7 +63,7 @@ p > select {
 }
 
 p > textarea {
-	font: normal 14px/1 'Courier New',Courier,'Lucida Sans Typewriter','Lucida Typewriter',monospace;
+	font: normal 14px/1 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Typewriter', monospace;
 	height: 400px;
 	width: 100%;
 }

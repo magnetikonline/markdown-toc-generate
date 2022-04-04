@@ -1,4 +1,13 @@
 {
+	"css.format.enable": true,
+	"css.format.newlineBetweenRules": true,
+	"css.format.newlineBetweenSelectors": true,
+	"css.format.spaceAroundSelectorSeparator": true,
+	"[css]": {
+		"editor.formatOnSave": true,
+	},
+
+	"javascript.format.enable": true,
 	"javascript.format.insertSpaceAfterCommaDelimiter": false,
 	"javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
 	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
