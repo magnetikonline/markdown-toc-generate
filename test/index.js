@@ -6,8 +6,8 @@ const assert = require('assert').strict,
 {
 	const testSuite = (methodSet) => {
 		const testCaseList = [
-			['!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~',''],
-			['word !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ word','word  word'],
+			['!"#$%&\'()*+,./:;<=>?@[\\]^`{|}~',''],
+			['word !"#$%&\'()*+,./:;<=>?@[\\]^`{|}~ word','word  word'],
 
 			// source: https://github.com/magnetikonline/markdown-toc-generate/issues/2#issue-416329701
 			['查看所有容器运行状态','查看所有容器运行状态'],
