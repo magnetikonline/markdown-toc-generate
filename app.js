@@ -24,7 +24,7 @@ const app = (mainCallback) => {
 
 		// if text starts and ends with a *single set* of inline code backticks, remove them
 		if (MARKDOWN_INLINE_CODE_START_END_REGEXP.test(text)) {
-			text = text.substring(1,text.length - 1);
+			return text.slice(1,-1);
 		}
 
 		return text;
