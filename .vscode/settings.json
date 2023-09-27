@@ -13,7 +13,13 @@
 	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
 	"javascript.format.semicolons": "insert",
 	"javascript.preferences.quoteStyle": "single",
-	"[javascript][json][jsonc]": {
+	"[javascript]": {
+		"editor.formatOnSave": true,
+	},
+
+	"json.format.enable": true,
+	"json.format.keepLines": true,
+	"[json][jsonc]": {
 		"editor.formatOnSave": true,
 	},
 }
