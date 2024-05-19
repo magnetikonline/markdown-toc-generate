@@ -1,9 +1,17 @@
 {
 	"css.format.enable": true,
-	"css.format.newlineBetweenRules": true,
-	"css.format.newlineBetweenSelectors": true,
+	"css.format.newlineBetweenSelectors": false,
+	"css.format.preserveNewLines": false,
 	"css.format.spaceAroundSelectorSeparator": true,
 	"[css]": {
+		"editor.formatOnSave": true,
+	},
+
+	"html.autoClosingTags": false,
+	"html.autoCreateQuotes": false,
+	"html.format.wrapAttributes": "preserve",
+	"html.format.wrapLineLength": 0,
+	"[html]": {
 		"editor.formatOnSave": true,
 	},
 
