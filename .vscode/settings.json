@@ -15,12 +15,12 @@
 		"editor.formatOnSave": true,
 	},
 
-	"javascript.format.enable": true,
-	"javascript.format.insertSpaceAfterCommaDelimiter": false,
-	"javascript.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
-	"javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
-	"javascript.format.semicolons": "insert",
-	"javascript.preferences.quoteStyle": "single",
+	"js/ts.format.enabled": true,
+	"js/ts.format.insertSpaceAfterCommaDelimiter": false,
+	"js/ts.format.insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
+	"js/ts.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
+	"js/ts.format.semicolons": "insert",
+	"js/ts.preferences.quoteStyle": "single",
 	"[javascript]": {
 		"editor.formatOnSave": true,
 	},
